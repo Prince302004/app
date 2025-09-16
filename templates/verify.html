@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Certificate Verification</title>
+    <style>
+        /* General Body */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            margin: 0;
+            padding: 0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Company Header */
+        header {
+            width: 100%;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            padding: 20px 0;
+            text-align: center;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #b0b4b8;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #ffffff;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            margin: 5px 10px;
+        }
+
+        .sidebar a:hover {
+            background-color: #34495e;
+            color: #fff;
+        }
+
+        /* Open Button */
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin: 20px;
+            transition: all 0.3s ease;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1002;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .openbtn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Container */
+        .container {
+            padding: 40px;
+            max-width: 700px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-top: 60px;
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2em;
+            letter-spacing: 1px;
+        }
+
+        /* Form */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+            color: white;
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Flash Messages */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        ul li {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Certificate Details */
+        h2 {
+            margin-top: 30px;
+            color: #34495e;
+            font-size: 1.8em;
+            animation: fadeIn 1s ease;
+        }
+
+        img {
+            display: block;
+            margin: 15px auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.05);
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        strong {
+            color: #2c3e50;
+        }
+
+        /* Verified Badge */
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: default;
+        }
+
+        .verified-badge i {
+            font-size: 18px;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(46, 204, 113, 0.7);
+            }
+
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 15px rgba(46, 204, 113, 0.7);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(46, 204, 113, 0.7);
+            }
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            input[type="text"] {
+                width: 100%;
+            }
+
+            .openbtn {
+                top: 10px;
+                left: 10px;
+                padding: 8px 15px;
+            }
+
+            header {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>Coder</header>
+    
+
+    <button class="openbtn" onclick="openNav()">☰</button>
+
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" onclick="closeNav()">Close ×</a>
+        <a href="{{ url_for('login') }}">Admin Login</a>
+    </div>
+
+    <div class="container">
+        <h1>Certificate Verification System</h1>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <input type="text" name="emp_id" placeholder="Enter Employee ID" required>
+            <button type="submit">Verify</button>
+        </form>
+
+        {% if details %}
+        <h2>Certificate Result</h2>
+        <img src="{{ url_for('static', filename='photos/' + details.photo) }}" width="200"><br><br>
+        <p><strong>Employee ID:</strong> {{ details.emp_id }}</p>
+        <p><strong>Student Name:</strong> {{ details.student_name }}</p>
+        <p><strong>Domain:</strong> {{ details.domain }}</p>
+        <p><strong>Duration:</strong> {{ details.duration }}</p>
+        <p><strong>Start Date:</strong> {{ details.start_date }}</p>
+        <p><strong>Award Date:</strong> {{ details.award_date }}</p>
+
+        <!-- Verified Badge -->
+        <div class="verified-badge">
+            <i class="fa-solid fa-circle-check"></i> Verified
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+        }
+    </script>
+</body>
+
+</html>
