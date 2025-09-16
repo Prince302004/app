@@ -1,0 +1,5 @@
+Flask==2.2.3
+Flask-MySQLdb==1.0.1
+Werkzeug==2.2.3
+qrcode==7.4
+mysqlclient==2.1.1
