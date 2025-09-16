@@ -15,6 +15,22 @@ app.config['MYSQL_DB'] = 'internship_db'
 
 mysql = MySQL(app)
 
+with app.app_context():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM admins WHERE username = %s", ("admin",))
+    existing = cur.fetchone()
+    if not existing:
+        hashed_password = generate_password_hash("admin123")  # default password
+        cur.execute(
+            "INSERT INTO admins (username, password) VALUES (%s, %s)",
+            ("admin", hashed_password)
+        )
+        mysql.connection.commit()
+        print("✅ Default admin created (username=admin, password=admin123)")
+    else:
+        print("ℹ️ Admin already exists, skipping insert")
+    cur.close()
+
 # Login required decorator
 def login_required(f):
     from functools import wraps
@@ -117,4 +133,5 @@ def success():
 
 
 if __name__ == '__main__':
+
     app.run(debug=True)
